@@ -2,38 +2,46 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "What is the main advantage of using M-ary PSK over BPSK?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Lower bandwidth efficiency",
+        "b": "Lower power efficiency",
+        "c": "Higher bandwidth efficiency",
+        "d": "Higher signal attenuation"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "c": "Correct. M-ary PSK increases bandwidth efficiency by transmitting multiple bits per symbol."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "In 16PSK modulation, how many distinct phase states are used?",
+      "answers": {
+        "a": "4",
+        "b": "8",
+        "c": "12",
+        "d": "16"
+      },
+      "explanations": {
+        "d": "Correct. 16PSK uses 16 different phase shifts to represent 4-bit symbols."
+      },
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "Which factor significantly affects the Bit Error Rate (BER) in M-ary PSK systems?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Carrier frequency only",
+        "b": "Modulation index",
+        "c": "Signal-to-noise ratio (SNR)",
+        "d": "Symbol synchronization"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "c": "Correct. BER in PSK systems is heavily influenced by the signal-to-noise ratio (SNR). Lower SNR results in higher BER."
       },
       "correctAnswer": "c",
-      "difficulty": "beginner"
+      "difficulty": "intermediate"
     }
   ]
 }
