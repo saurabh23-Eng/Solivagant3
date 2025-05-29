@@ -2,37 +2,45 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "What does PSK stand for?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Pulse Shift Keying",
+        "b": "Phase Shift Keying",
+        "c": "Periodic Signal Keying",
+        "d": "Phase Sample Keying"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "b": "Correct. PSK stands for Phase Shift Keying, where data is transmitted by changing the phase of the carrier signal."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "In 8PSK, how many bits are represented per symbol?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "2",
+        "b": "3",
+        "c": "4",
+        "d": "1"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "b": "Correct. 8PSK transmits 3 bits per symbol because log₂(8) = 3."
       },
-      "correctAnswer": "c",
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What type of noise is usually considered in digital communication simulations?",
+      "answers": {
+        "a": "Impulse Noise",
+        "b": "White Gaussian Noise",
+        "c": "Thermal Noise",
+        "d": "Pink Noise"
+      },
+      "explanations": {
+        "b": "Correct. AWGN (Additive White Gaussian Noise) is the standard model for noise in digital communication systems."
+      },
+      "correctAnswer": "b",
       "difficulty": "beginner"
     }
   ]
