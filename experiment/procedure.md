@@ -1,65 +1,55 @@
-🔧 Procedure (Step-by-Step)
+## ✅ Procedure
 
-1.Start Stimulator,
+**Title:** To simulate M-ary Phase Shift Keying technique using MATLAB software (8PSK, 16PSK) and perform BER calculation.
 
-Open a new script or use the Command Window to begin the simulation.
+---
 
+### 🔧 **Procedure (Step-by-Step)**
 
-2.Define Simulation Parameters
+1. **Start MATLAB Software**
 
-Set the total number of bits to be transmitted.
+   * Launch MATLAB on your system.
+   * Open a new script or use the Command Window to begin the simulation.
 
-Choose the modulation scheme: 8PSK or 16PSK.
+2. **Define Simulation Parameters**
 
-Specify the range of SNR (Signal-to-Noise Ratio) values in decibels.
+   * Set the total number of bits to be transmitted.
+   * Choose the modulation scheme: 8PSK or 16PSK.
+   * Specify the range of SNR (Signal-to-Noise Ratio) values in decibels.
+   * Define any additional simulation settings as needed.
 
-Define any additional simulation settings as needed.
+3. **Generate Random Bit Stream**
 
+   * Create a stream of random bits.
+   * Group bits appropriately:
 
-3.Generate Random Bit Stream
+     * 3 bits per symbol for 8PSK
+     * 4 bits per symbol for 16PSK
 
-Create a stream of random bits.
+4. **Map Bits to Symbols**
 
-Group bits appropriately:
+   * Convert the grouped bits into decimal symbol values.
+   * Modulate the symbols using the selected PSK scheme.
 
-3 bits per symbol for 8PSK
+5. **Add AWGN (Noise)**
 
-4 bits per symbol for 16PSK
+   * For each SNR value, add Additive White Gaussian Noise to the modulated signal to simulate real-world conditions.
 
+6. **Demodulate Received Signal**
 
-4.Map Bits to Symbols
+   * Demodulate the noisy signal using the same PSK scheme.
+   * Convert the demodulated symbols back to their original bit form.
 
-Convert the grouped bits into decimal symbol values.
+7. **Calculate BER (Bit Error Rate)**
 
-Modulate the symbols using the selected PSK scheme.
+   * Compare the original transmitted bits with the received bits.
+   * Calculate the Bit Error Rate for each SNR value.
 
+8. **Plot BER Curve**
 
-5.Add AWGN (Noise)
+   * Plot a graph of BER versus SNR to analyze the performance of the modulation scheme.
 
-For each SNR value, add Additive White Gaussian Noise to the modulated signal to simulate real-world conditions.
+9. **Repeat for Both Modulation Types**
 
-
-6.Demodulate Received Signal
-
-Demodulate the noisy signal using the same PSK scheme.
-
-Convert the demodulated symbols back to their original bit form.
-
-
-7.Calculate BER (Bit Error Rate)
-
-Compare the original transmitted bits with the received bits.
-
-Calculate the Bit Error Rate for each SNR value.
-
-
-8.Plot BER Curve
-
-Plot a graph of BER versus SNR to analyze the performance of the modulation scheme.
-
-Repeat for Both Modulation Types
-
-
-9.Repeat the entire procedure for both 8PSK and 16PSK.
-
-Compare the resulting BER curves to understand how modulation order affects performance.### Procedure
+   * Repeat the entire procedure for both 8PSK and 16PSK.
+   * Compare the resulting BER curves to understand how modulation order affects performance.
