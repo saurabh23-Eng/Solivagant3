@@ -1,13 +1,1192 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced M-ary PSK BER Simulation Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --secondary: #0ea5e9;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .header-gradient {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(90deg, var(--accent), #d946ef);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(139, 92, 246, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .op-block {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .op-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+        
+        .op-block.active {
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+            z-index: 10;
+        }
+        
+        .op-block.active::before {
+            left: 100%;
+        }
+        
+        .arrow {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .arrow::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 8px;
+            background: #94a3b8;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .arrow::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-top: 4px solid #94a3b8;
+            border-right: 4px solid #94a3b8;
+            transform: rotate(45deg) translateX(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .arrow.active::before {
+            background: var(--primary);
+            width: 40px;
+        }
+        
+        .arrow.active::after {
+            border-color: var(--primary);
+            transform: rotate(45deg) translateX(-13px);
+        }
+        
+        .signal-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            opacity: 0.7;
+            transition: all 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .progress-container {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .constellation-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: rgba(241, 245, 249, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .constellation-axis {
+            position: absolute;
+            background-color: rgba(148, 163, 184, 0.3);
+        }
+        
+        .axis-x {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+        
+        .axis-y {
+            width: 1px;
+            height: 100%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .constellation-label {
+            position: absolute;
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .label-i {
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+        }
+        
+        .label-q {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .noise-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .noise-dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: rgba(100, 116, 139, 0.3);
+            border-radius: 50%;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .floating-1 { animation-delay: 0s; }
+        .floating-2 { animation-delay: 0.5s; }
+        .floating-3 { animation-delay: 1s; }
+        .floating-4 { animation-delay: 1.5s; }
+    </style>
 </head>
-<body>
-		<!-- Your code goes here-->
+<body class="p-4 sm:p-6">
+    <!-- Floating decorative elements -->
+    <div class="fixed top-10 left-5 w-8 h-8 rounded-full bg-purple-300 opacity-20 floating floating-1"></div>
+    <div class="fixed top-1/4 right-10 w-12 h-12 rounded-full bg-blue-300 opacity-20 floating floating-2"></div>
+    <div class="fixed bottom-20 left-1/4 w-10 h-10 rounded-full bg-indigo-300 opacity-20 floating floating-3"></div>
+    <div class="fixed bottom-1/3 right-1/4 w-14 h-14 rounded-full bg-cyan-300 opacity-20 floating floating-4"></div>
+    
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="header-gradient rounded-2xl p-6 mb-6 shadow-lg">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-white">
+                        <i class="fas fa-satellite mr-3"></i>M-ary PSK BER Simulation Lab
+                    </h1>
+                    <p class="text-indigo-100 mt-2">
+                        Interactive simulation of Bit Error Rate for Phase Shift Keying modulation
+                    </p>
+                </div>
+                <div class="flex space-x-3">
+                    <button id="viewInstructionsBtn" class="btn-primary">
+                        <i class="fas fa-book mr-2"></i>Lab Instructions
+                    </button>
+                    <button id="howToPerformLabBtn" class="btn-secondary">
+                        <i class="fas fa-vial mr-2"></i>How to Perform
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Panel - Controls -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-sliders-h mr-3 text-indigo-600"></i>Simulation Controls
+                </h2>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label for="modulationType" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-wave-square mr-2 text-indigo-500"></i>Modulation Type:
+                        </label>
+                        <div class="relative">
+                            <select id="modulationType" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="8">8-PSK</option>
+                                <option value="16">16-PSK</option>
+                                <option value="32">32-PSK</option>
+                                <option value="64">64-PSK</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="numSymbols" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-hashtag mr-2 text-indigo-500"></i>Number of Symbols (N):
+                        </label>
+                        <input type="number" id="numSymbols" value="100000" min="1000" step="1000" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>1K</span>
+                            <span>100K</span>
+                            <span>1M</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label for="ebNoStart" class="block text-sm font-medium text-gray-700 mb-2">Eb/N0 Start (dB):</label>
+                            <input type="number" id="ebNoStart" value="0" min="-10" max="20" step="1" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="ebNoEnd" class="block text-sm font-medium text-gray-700 mb-2">Eb/N0 End (dB):</label>
+                            <input type="number" id="ebNoEnd" value="15" min="-10" max="20" step="1" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="ebNoStep" class="block text-sm font-medium text-gray-700 mb-2">Step (dB):</label>
+                            <input type="number" id="ebNoStep" value="1" min="0.1" step="0.1" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button id="runSimulationBtn" class="btn-primary w-full py-4 text-lg pulse">
+                            <i class="fas fa-play-circle mr-2"></i>Run Simulation
+                        </button>
+                    </div>
+                    
+                    <div class="pt-2">
+                        <button id="resetBtn" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-lg shadow transition duration-300">
+                            <i class="fas fa-redo mr-2"></i>Reset Simulation
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-tachometer-alt mr-3 text-indigo-600"></i>Simulation Progress
+                    </h3>
+                    <div class="progress-container">
+                        <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600 mt-2">
+                        <span>Status: <span id="progressStatus">Ready</span></span>
+                        <span><span id="progressPercent">0</span>%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Middle Panel - Operation Chamber -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-microchip mr-3 text-indigo-600"></i>Operation Chamber
+                </h2>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl shadow-inner h-full">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4">Signal Processing Flow</h3>
+                    
+                    <div class="flex flex-col items-center space-y-8">
+                        <div id="op-data-gen" class="op-block card w-full max-w-md p-5 text-center">
+                            <div class="text-blue-600 mb-3">
+                                <i class="fas fa-database text-3xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Data Generation</h4>
+                            <p class="text-sm text-gray-600 mt-2">Generating random binary data for transmission</p>
+                        </div>
+                        
+                        <div class="arrow w-full max-w-md flex justify-center">
+                            <div class="h-1 w-24 bg-gray-300 rounded-full"></div>
+                        </div>
+                        
+                        <div id="op-modulation" class="op-block card w-full max-w-md p-5 text-center">
+                            <div class="text-blue-600 mb-3">
+                                <i class="fas fa-wave-square text-3xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Modulation</h4>
+                            <p class="text-sm text-gray-600 mt-2">Mapping bits to complex symbols using M-PSK</p>
+                        </div>
+                        
+                        <div class="arrow w-full max-w-md flex justify-center">
+                            <div class="h-1 w-24 bg-gray-300 rounded-full"></div>
+                        </div>
+                        
+                        <div id="op-noise" class="op-block card w-full max-w-md p-5 text-center">
+                            <div class="text-blue-600 mb-3">
+                                <i class="fas fa-wind text-3xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Noise Addition</h4>
+                            <p class="text-sm text-gray-600 mt-2">Adding AWGN to simulate channel effects</p>
+                        </div>
+                        
+                        <div class="arrow w-full max-w-md flex justify-center">
+                            <div class="h-1 w-24 bg-gray-300 rounded-full"></div>
+                        </div>
+                        
+                        <div id="op-demodulation" class="op-block card w-full max-w-md p-5 text-center">
+                            <div class="text-blue-600 mb-3">
+                                <i class="fas fa-project-diagram text-3xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Demodulation</h4>
+                            <p class="text-sm text-gray-600 mt-2">Detecting symbols using minimum distance criteria</p>
+                        </div>
+                        
+                        <div class="arrow w-full max-w-md flex justify-center">
+                            <div class="h-1 w-24 bg-gray-300 rounded-full"></div>
+                        </div>
+                        
+                        <div id="op-ber-calc" class="op-block card w-full max-w-md p-5 text-center">
+                            <div class="text-blue-600 mb-3">
+                                <i class="fas fa-calculator text-3xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">BER Calculation</h4>
+                            <p class="text-sm text-gray-600 mt-2">Computing bit error rate performance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Visualizations -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-line mr-3 text-indigo-600"></i>Visualizations
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-5 rounded-xl shadow-inner">
+                        <h3 class="text-xl font-semibold text-purple-800 mb-4">Constellation Diagrams</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-md font-medium text-gray-700 mb-2 text-center">Input Constellation</h4>
+                                <div class="constellation-container">
+                                    <div class="constellation-axis axis-x"></div>
+                                    <div class="constellation-axis axis-y"></div>
+                                    <div class="constellation-label label-i">I</div>
+                                    <div class="constellation-label label-q">Q</div>
+                                    <div id="input-constellation"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-md font-medium text-gray-700 mb-2 text-center">Output Constellation</h4>
+                                <div class="constellation-container">
+                                    <div class="constellation-axis axis-x"></div>
+                                    <div class="constellation-axis axis-y"></div>
+                                    <div class="constellation-label label-i">I</div>
+                                    <div class="constellation-label label-q">Q</div>
+                                    <div id="output-constellation"></div>
+                                    <div id="noise-animation" class="noise-animation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-teal-50 to-cyan-50 p-5 rounded-xl shadow-inner">
+                        <h3 class="text-xl font-semibold text-teal-800 mb-4">BER Performance</h3>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <canvas id="berChart" height="300"></canvas>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-center">
+                            <button id="downloadReportBtn" class="btn-secondary">
+                                <i class="fas fa-download mr-2"></i>Download BER Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900">Lab Instructions: M-ary PSK BER Simulation</h2>
+                    <span class="close-button text-3xl cursor-pointer">&times;</span>
+                </div>
+                
+                <div class="prose max-w-none">
+                    <h3 class="text-2xl font-semibold text-blue-700 mt-6 mb-2">1. Objective of the Experiment</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The primary objective of this experiment is to simulate the performance of M-ary Phase Shift Keying (M-PSK) digital modulation techniques, specifically 8-PSK, 16-PSK, and higher orders, in an Additive White Gaussian Noise (AWGN) channel. By performing this simulation, you will calculate and analyze the Bit Error Rate (BER) as a function of the Energy per Bit to Noise Power Spectral Density Ratio (Eb/N0), and compare it with theoretical expectations.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-blue-800">Key Concepts</h4>
+                            <ul class="list-disc pl-5 mt-2">
+                                <li>Digital modulation techniques</li>
+                                <li>Phase Shift Keying (PSK)</li>
+                                <li>Bit Error Rate (BER)</li>
+                                <li>AWGN channel effects</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-purple-800">Learning Outcomes</h4>
+                            <ul class="list-disc pl-5 mt-2">
+                                <li>Understand M-PSK modulation</li>
+                                <li>Analyze BER performance</li>
+                                <li>Compare simulation vs theory</li>
+                                <li>Evaluate noise impact</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-2xl font-semibold text-blue-700 mt-6 mb-2">2. Theory Behind M-ary PSK</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        M-ary Phase Shift Keying (M-PSK) is a digital modulation scheme where information is encoded by varying the phase of a constant amplitude carrier signal. Instead of transmitting one bit at a time, M-PSK transmits $\log_2(M)$ bits per symbol, where $M$ is the number of distinct phase states. This allows for higher data rates within a given bandwidth compared to binary modulation schemes.
+                    </p>
+                    
+                    <div class="my-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-bold text-gray-800">Modulation Characteristics</h4>
+                        <div class="overflow-x-auto mt-3">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left">Modulation</th>
+                                        <th class="px-4 py-2 text-left">Bits/Symbol</th>
+                                        <th class="px-4 py-2 text-left">Phase Separation</th>
+                                        <th class="px-4 py-2 text-left">Spectral Efficiency</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-2">8-PSK</td>
+                                        <td class="px-4 py-2">3</td>
+                                        <td class="px-4 py-2">45°</td>
+                                        <td class="px-4 py-2">Medium</td>
+                                    </tr>
+                                    <tr class="bg-gray-50">
+                                        <td class="px-4 py-2">16-PSK</td>
+                                        <td class="px-4 py-2">4</td>
+                                        <td class="px-4 py-2">22.5°</td>
+                                        <td class="px-4 py-2">High</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-2">32-PSK</td>
+                                        <td class="px-4 py-2">5</td>
+                                        <td class="px-4 py-2">11.25°</td>
+                                        <td class="px-4 py-2">Very High</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-2xl font-semibold text-blue-700 mt-6 mb-2">3. Explanation of BER (Bit Error Rate)</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Bit Error Rate (BER) is a key performance metric in digital communication systems. It is defined as the number of erroneous bits divided by the total number of bits transmitted over a communication channel. A lower BER indicates better system performance.
+                    </p>
+                    
+                    <div class="my-6 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-yellow-400 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    <strong>Note:</strong> BER decreases exponentially as Eb/N0 increases. Higher-order modulations (like 64-PSK) require significantly higher Eb/N0 to achieve the same BER as lower-order modulations (like 8-PSK).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-2xl font-semibold text-blue-700 mt-6 mb-2">4. Expected Learning Outcomes</h3>
+                    <ul class="list-disc pl-5 text-gray-700 leading-relaxed space-y-2">
+                        <li>Understand the principles of M-ary PSK modulation (8-PSK, 16-PSK, etc.)</li>
+                        <li>Learn how to simulate a digital communication system in the presence of AWGN</li>
+                        <li>Calculate and interpret the Bit Error Rate (BER) for different modulation schemes</li>
+                        <li>Analyze the relationship between BER and Eb/N0</li>
+                        <li>Compare simulated BER results with theoretical BER curves</li>
+                        <li>Appreciate the trade-offs between spectral efficiency and power efficiency in M-ary modulation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="howToPerformLabModal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900">How to Perform the Lab</h2>
+                    <span class="close-button text-3xl cursor-pointer">&times;</span>
+                </div>
+                
+                <div class="prose max-w-none">
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Follow these steps to conduct the M-ary PSK BER simulation. The lab provides an interactive environment to understand the impact of different modulation schemes and noise levels on communication system performance.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-blue-50 p-5 rounded-lg">
+                            <div class="text-blue-500 text-3xl mb-3">
+                                <i class="fas fa-sliders-h"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-blue-800 mb-2">1. Configure Parameters</h4>
+                            <p class="text-gray-700 text-sm">
+                                Select modulation type, number of symbols, and Eb/N0 range using the control panel.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-green-50 p-5 rounded-lg">
+                            <div class="text-green-500 text-3xl mb-3">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-green-800 mb-2">2. Run Simulation</h4>
+                            <p class="text-gray-700 text-sm">
+                                Click "Run Simulation" to start the experiment. Watch the operation chamber animate.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-purple-50 p-5 rounded-lg">
+                            <div class="text-purple-500 text-3xl mb-3">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-purple-800 mb-2">3. Analyze Results</h4>
+                            <p class="text-gray-700 text-sm">
+                                Examine constellation diagrams and BER performance chart to understand results.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold text-gray-800 mt-8 mb-4">Detailed Steps:</h3>
+                    <ol class="list-decimal pl-5 text-gray-700 leading-relaxed space-y-4">
+                        <li>
+                            <strong>Review Lab Instructions:</strong> Click the "Lab Instructions" button to understand the theory, objectives, and expected outcomes of the experiment.
+                        </li>
+                        <li>
+                            <strong>Select Modulation Type:</strong> In the "Simulation Controls" panel, use the dropdown to choose between 8-PSK, 16-PSK, 32-PSK, or 64-PSK modulation schemes.
+                        </li>
+                        <li>
+                            <strong>Set Simulation Parameters:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-2">
+                                <li><strong>Number of Symbols (N):</strong> Enter the total number of symbols to simulate (minimum 1,000). Higher values provide more accurate results but take longer to simulate.</li>
+                                <li><strong>Eb/N0 Range:</strong> Define the starting, ending, and step values for Eb/N0 (in dB). This range determines the x-axis of your BER plot.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Run Simulation:</strong> Click the "Run Simulation" button. Observe the "Operation Chamber" as it highlights each step of the signal processing in sequence. The progress bar will show simulation completion status.
+                        </li>
+                        <li>
+                            <strong>Analyze Results:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-2">
+                                <li><strong>Input Constellation:</strong> Shows the ideal constellation points of your chosen M-PSK modulation.</li>
+                                <li><strong>Output Constellation:</strong> Displays the received symbols after noise has been added. You can see how noise distorts the constellation points.</li>
+                                <li><strong>BER vs. Eb/N0 Plot:</strong> Shows simulated BER values compared to theoretical expectations. Higher-order modulations require higher Eb/N0 for the same BER performance.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Download Report:</strong> After simulation completes, click "Download BER Report" to save the data as a CSV file for further analysis.
+                        </li>
+                        <li>
+                            <strong>Experiment with Parameters:</strong> Try different modulation schemes, symbol counts, or Eb/N0 ranges to see how these parameters affect system performance.
+                        </li>
+                    </ol>
+                    
+                    <div class="mt-8 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <h4 class="font-bold text-green-800 mb-2">Pro Tip:</h4>
+                        <p class="text-green-700">
+                            For higher-order modulations (32-PSK, 64-PSK), increase the number of symbols to at least 500,000 to get accurate BER measurements, especially at higher Eb/N0 values where errors are rare.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
+    <script>
+        // --- Global Chart Instances ---
+        let berChart;
+        let constellationPoints = [];
+        
+        // --- Utility Functions ---
+        function qFunction(x) {
+            if (x < 0) return 1 - qFunction(-x);
+            const a = 0.3480242;
+            const b = -0.0280046;
+            const c = 0.1935278;
+            const t = 1 / (1 + a * x);
+            return (t * (b * t + c) + 0.5) * Math.exp(-x * x / 2);
+        }
+        
+        function generateRandomBits(numSymbols, k) {
+            const totalBits = numSymbols * k;
+            return Array.from({length: totalBits}, () => Math.round(Math.random()));
+        }
+        
+        function decToGray(dec, k) {
+            let bin = dec.toString(2).padStart(k, '0');
+            let gray = bin[0];
+            for (let i = 1; i < k; i++) {
+                gray += (parseInt(bin[i-1]) ^ parseInt(bin[i])).toString();
+            }
+            return gray;
+        }
+        
+        function grayToDec(gray) {
+            let bin = gray[0];
+            for (let i = 1; i < gray.length; i++) {
+                bin += (parseInt(bin[i-1]) ^ parseInt(gray[i])).toString();
+            }
+            return parseInt(bin, 2);
+        }
+        
+        function mapBitsToSymbols(bits, M) {
+            const k = Math.log2(M);
+            const symbols = [];
+            for (let i = 0; i < bits.length; i += k) {
+                const bitSlice = bits.slice(i, i + k).join('');
+                const decIndex = parseInt(bitSlice, 2);
+                const grayIndex = grayToDec(decToGray(decIndex, k));
+                const phase = (2 * Math.PI * grayIndex) / M;
+                symbols.push({ I: Math.cos(phase), Q: Math.sin(phase) });
+            }
+            return symbols;
+        }
+        
+        function addAWGN(symbols, EbNo_dB, k) {
+            const EbNo_linear = Math.pow(10, EbNo_dB / 10);
+            const EsNo_linear = EbNo_linear * k;
+            const noiseVariance = 1 / (2 * EsNo_linear);
+            
+            return symbols.map(symbol => {
+                let u1 = Math.random(), u2 = Math.random();
+                let z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+                let z1 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+                
+                return {
+                    I: symbol.I + z0 * Math.sqrt(noiseVariance),
+                    Q: symbol.Q + z1 * Math.sqrt(noiseVariance)
+                };
+            });
+        }
+        
+        function demodulateSymbols(noisySymbols, M) {
+            return noisySymbols.map(noisySymbol => {
+                let minDistance = Infinity, closestIndex = -1;
+                
+                for (let i = 0; i < M; i++) {
+                    const idealPhase = (2 * Math.PI * i) / M;
+                    const idealI = Math.cos(idealPhase);
+                    const idealQ = Math.sin(idealPhase);
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(noisySymbol.I - idealI, 2) +
+                        Math.pow(noisySymbol.Q - idealQ, 2)
+                    );
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestIndex = i;
+                    }
+                }
+                return closestIndex;
+            });
+        }
+        
+        function mapSymbolsToBits(demodulatedIndices, M) {
+            const k = Math.log2(M);
+            return demodulatedIndices.flatMap(index => {
+                const grayBinary = decToGray(index, k);
+                const decBinary = grayToDec(grayBinary).toString(2).padStart(k, '0');
+                return decBinary.split('').map(bit => parseInt(bit));
+            });
+        }
+        
+        function calculateBER(transmittedBits, receivedBits) {
+            let errors = 0;
+            for (let i = 0; i < transmittedBits.length; i++) {
+                if (transmittedBits[i] !== receivedBits[i]) errors++;
+            }
+            return errors / transmittedBits.length;
+        }
+        
+        function theoreticalBER(EbNo_dB, M) {
+            const k = Math.log2(M);
+            const EbNo_linear = Math.pow(10, EbNo_dB / 10);
+            const arg = Math.sqrt(2 * EbNo_linear * k) * Math.sin(Math.PI / M);
+            return (2 / k) * qFunction(arg);
+        }
+        
+        // --- Visualization Functions ---
+        function renderConstellation(constellation, containerId, isInput = true) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            constellation.forEach(point => {
+                const el = document.createElement('div');
+                el.className = 'signal-point';
+                el.style.left = `${50 + point.I * 40}%`;
+                el.style.top = `${50 - point.Q * 40}%`;
+                el.style.backgroundColor = isInput ? '#4f46e5' : '#ef4444';
+                container.appendChild(el);
+            });
+        }
+        
+        function createNoiseAnimation() {
+            const container = document.getElementById('noise-animation');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'noise-dot';
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.top = `${Math.random() * 100}%`;
+                container.appendChild(dot);
+            }
+        }
+        
+        function initBerChart() {
+            const ctx = document.getElementById('berChart').getContext('2d');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Simulated BER',
+                            data: [],
+                            borderColor: 'rgb(79, 70, 229)',
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgb(79, 70, 229)',
+                            tension: 0.2
+                        },
+                        {
+                            label: 'Theoretical BER',
+                            data: [],
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            tension: 0.2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y.toExponential(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Eb/N0 (dB)',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            type: 'logarithmic',
+                            title: {
+                                display: true,
+                                text: 'Bit Error Rate (BER)',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 1e-6,
+                            max: 1,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toExponential();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // --- Operation Chamber Animation ---
+        const opBlocks = {
+            'data-gen': document.getElementById('op-data-gen'),
+            'modulation': document.getElementById('op-modulation'),
+            'noise': document.getElementById('op-noise'),
+            'demodulation': document.getElementById('op-demodulation'),
+            'ber-calc': document.getElementById('op-ber-calc')
+        };
+        
+        function highlightOperation(step) {
+            // Reset all
+            Object.values(opBlocks).forEach(block => block.classList.remove('active'));
+            
+            // Highlight current step
+            if (opBlocks[step]) {
+                opBlocks[step].classList.add('active');
+            }
+        }
+        
+        function resetOperationHighlights() {
+            Object.values(opBlocks).forEach(block => block.classList.remove('active'));
+        }
+        
+        // --- Main Simulation Logic ---
+        async function runSimulation() {
+            resetOperationHighlights();
+            createNoiseAnimation();
+            
+            const M = parseInt(document.getElementById('modulationType').value);
+            const k = Math.log2(M);
+            const numSymbols = parseInt(document.getElementById('numSymbols').value);
+            const ebNoStart = parseFloat(document.getElementById('ebNoStart').value);
+            const ebNoEnd = parseFloat(document.getElementById('ebNoEnd').value);
+            const ebNoStep = parseFloat(document.getElementById('ebNoStep').value);
+            
+            // Validation
+            if (numSymbols < 1000) {
+                alert("Please enter at least 1000 symbols for meaningful results.");
+                return;
+            }
+            if (ebNoStart >= ebNoEnd) {
+                alert("Eb/N0 End must be greater than Eb/N0 Start.");
+                return;
+            }
+            if (ebNoStep <= 0) {
+                alert("Eb/N0 Step must be a positive value.");
+                return;
+            }
+            
+            // Update UI
+            const runBtn = document.getElementById('runSimulationBtn');
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Simulating...';
+            document.getElementById('downloadReportBtn').disabled = true;
+            document.getElementById('resetBtn').disabled = true;
+            
+            // Calculate number of steps
+            const numSteps = Math.floor((ebNoEnd - ebNoStart) / ebNoStep) + 1;
+            let currentStep = 0;
+            
+            const ebNoValues = [];
+            const simulatedBERs = [];
+            const theoreticalBERs = [];
+            
+            // Generate ideal constellation for display
+            const idealConstellation = [];
+            for (let i = 0; i < M; i++) {
+                const phase = (2 * Math.PI * i) / M;
+                idealConstellation.push({ I: Math.cos(phase), Q: Math.sin(phase) });
+            }
+            renderConstellation(idealConstellation, 'input-constellation', true);
+            
+            // Initialize BER chart
+            if (berChart) berChart.destroy();
+            berChart = initBerChart();
+            
+            // Perform simulation for each Eb/N0 value
+            for (let ebNo_dB = ebNoStart; ebNo_dB <= ebNoEnd; ebNo_dB += ebNoStep) {
+                // Update progress
+                currentStep++;
+                const progress = (currentStep / numSteps) * 100;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressPercent').textContent = Math.round(progress);
+                document.getElementById('progressStatus').textContent = `Processing Eb/N0 = ${ebNo_dB.toFixed(1)} dB`;
+                
+                ebNoValues.push(ebNo_dB);
+                
+                // Step 1: Data Generation
+                highlightOperation('data-gen');
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const transmittedBits = generateRandomBits(numSymbols, k);
+                
+                // Step 2: Modulation
+                highlightOperation('modulation');
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const modulatedSymbols = mapBitsToSymbols(transmittedBits, M);
+                
+                // Step 3: Noise Addition
+                highlightOperation('noise');
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const noisySymbols = addAWGN(modulatedSymbols, ebNo_dB, k);
+                
+                // Update output constellation
+                if (currentStep === 1) {
+                    renderConstellation(noisySymbols.slice(0, 1000), 'output-constellation', false);
+                }
+                
+                // Step 4: Demodulation
+                highlightOperation('demodulation');
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const demodulatedIndices = demodulateSymbols(noisySymbols, M);
+                const receivedBits = mapSymbolsToBits(demodulatedIndices, M);
+                
+                // Step 5: BER Calculation
+                highlightOperation('ber-calc');
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const simulatedBER = calculateBER(transmittedBits, receivedBits);
+                simulatedBERs.push(simulatedBER);
+                
+                const theoretical = theoreticalBER(ebNo_dB, M);
+                theoreticalBERs.push(theoretical);
+                
+                // Update BER chart
+                berChart.data.labels = ebNoValues.map(val => val.toFixed(1));
+                berChart.data.datasets[0].data = simulatedBERs;
+                berChart.data.datasets[1].data = theoreticalBERs;
+                berChart.update();
+            }
+            
+            // Reset UI
+            resetOperationHighlights();
+            runBtn.disabled = false;
+            runBtn.innerHTML = '<i class="fas fa-play-circle mr-2"></i>Run Simulation';
+            document.getElementById('downloadReportBtn').disabled = false;
+            document.getElementById('resetBtn').disabled = false;
+            document.getElementById('progressStatus').textContent = 'Complete';
+            
+            // Store data for download
+            window.berDataForDownload = { ebNoValues, simulatedBERs, theoreticalBERs };
+        }
+        
+        function resetSimulation() {
+            // Reset charts
+            if (berChart) {
+                berChart.data.labels = [];
+                berChart.data.datasets[0].data = [];
+                berChart.data.datasets[1].data = [];
+                berChart.update();
+            }
+            
+            // Reset constellation displays
+            document.getElementById('input-constellation').innerHTML = '';
+            document.getElementById('output-constellation').innerHTML = '';
+            
+            // Reset progress
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressPercent').textContent = '0';
+            document.getElementById('progressStatus').textContent = 'Ready';
+            
+            // Clear data
+            window.berDataForDownload = null;
+        }
+        
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize BER chart
+            berChart = initBerChart();
+            
+            // Create noise animation
+            createNoiseAnimation();
+            
+            // Modals
+            const instructionsModal = document.getElementById('instructionsModal');
+            const viewInstructionsBtn = document.getElementById('viewInstructionsBtn');
+            const howToPerformLabModal = document.getElementById('howToPerformLabModal');
+            const howToPerformLabBtn = document.getElementById('howToPerformLabBtn');
+            const closeButtons = document.querySelectorAll('.close-button');
+            
+            viewInstructionsBtn.addEventListener('click', () => instructionsModal.style.display = 'flex');
+            howToPerformLabBtn.addEventListener('click', () => howToPerformLabModal.style.display = 'flex');
+            
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    instructionsModal.style.display = 'none';
+                    howToPerformLabModal.style.display = 'none';
+                });
+            });
+            
+            window.addEventListener('click', (event) => {
+                if (event.target === instructionsModal) instructionsModal.style.display = 'none';
+                if (event.target === howToPerformLabModal) howToPerformLabModal.style.display = 'none';
+            });
+            
+            // Simulation buttons
+            document.getElementById('runSimulationBtn').addEventListener('click', runSimulation);
+            document.getElementById('resetBtn').addEventListener('click', resetSimulation);
+            
+            // Download Report Button
+            document.getElementById('downloadReportBtn').addEventListener('click', () => {
+                if (!window.berDataForDownload) {
+                    alert('Please run the simulation first to generate data for download.');
+                    return;
+                }
+                
+                const { ebNoValues, simulatedBERs, theoreticalBERs } = window.berDataForDownload;
+                let csvContent = "Eb/N0 (dB),Simulated BER,Theoretical BER\n";
+                
+                for (let i = 0; i < ebNoValues.length; i++) {
+                    csvContent += `${ebNoValues[i]},${simulatedBERs[i]},${theoreticalBERs[i]}\n`;
+                }
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'm_psk_ber_report.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+            
+            // Render initial constellation for selected modulation
+            const modulationSelect = document.getElementById('modulationType');
+            function updateConstellation() {
+                const M = parseInt(modulationSelect.value);
+                const idealConstellation = [];
+                for (let i = 0; i < M; i++) {
+                    const phase = (2 * Math.PI * i) / M;
+                    idealConstellation.push({ I: Math.cos(phase), Q: Math.sin(phase) });
+                }
+                renderConstellation(idealConstellation, 'input-constellation', true);
+            }
+            
+            modulationSelect.addEventListener('change', updateConstellation);
+            updateConstellation();
+        });
+    </script>
 </body>
 </html>
