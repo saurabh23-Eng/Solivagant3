@@ -42,6 +42,90 @@
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
+    },
+    {
+      "question": "In 16PSK modulation, how many distinct phase states are used?",
+      "answers": {
+        "a": "4",
+        "b": "8",
+        "c": "12",
+        "d": "16"
+      },
+      "explanations": {
+        "d": "Correct. 16PSK uses 16 different phase shifts to represent 4-bit symbols."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which MATLAB function is commonly used to add AWGN (Additive White Gaussian Noise) to a PSK-modulated signal for BER simulation?",
+      "answers": {
+        "a": "pskmod()",
+        "b": "awgn()",
+        "c": "berawgn()",
+        "d": "fft()"
+      },
+      "explanations": {
+        "b": "Correct. The `awgn()` function adds noise to a signal at a specified SNR level."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the main advantage of using M-ary PSK over BPSK?",
+      "answers": {
+        "a": "Lower bandwidth efficiency",
+        "b": "Lower power efficiency",
+        "c": "Higher bandwidth efficiency",
+        "d": "Higher signal attenuation"
+      },
+      "explanations": {
+        "c": "Correct. M-ary PSK increases bandwidth efficiency by transmitting multiple bits per symbol."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Which factor significantly affects the Bit Error Rate (BER) in M-ary PSK systems?",
+      "answers": {
+        "a": "Carrier frequency only",
+        "b": "Modulation index",
+        "c": "Signal-to-noise ratio (SNR)",
+        "d": "Symbol synchronization"
+      },
+      "explanations": {
+        "c": "Correct. BER in PSK systems is heavily influenced by the signal-to-noise ratio (SNR). Lower SNR results in higher BER."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What is the primary trade-off when increasing the value of M in M-ary PSK (e.g., from 8PSK to 16PSK)?",
+      "answers": {
+        "a": "Higher bandwidth efficiency at the cost of increased BER for the same SNR",
+        "b": "Lower power consumption but reduced data rate",
+        "c": "Improved noise immunity with simpler hardware",
+        "d": "Reduced phase ambiguity but higher latency"
+      },
+      "explanations": {
+        "a": "Correct. Higher M improves bandwidth efficiency (more bits/symbol) but requires higher SNR to maintain the same BER."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "For a given SNR, why does 16PSK typically exhibit a higher BER than 8PSK?",
+      "answers": {
+        "a": "Because 16PSK symbols are closer in phase, making them more susceptible to noise",
+        "b": "Because 16PSK uses a lower carrier frequency",
+        "c": "Because 8PSK has a higher modulation index",
+        "d": "Because 16PSK requires less transmit power"
+      },
+      "explanations": {
+        "a": "Correct. Higher M packs more phase states (smaller angular separation), increasing the likelihood of demodulation errors due to noise."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
     }
   ]
 }
