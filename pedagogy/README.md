@@ -5,13 +5,13 @@
 
 
 <br>
-<b> Experiment : Name of the experiment	 <a name="top"></a> <br>
+<b> Experiment : To simulate m arrays phase shift keying technique using MATLAB software (8PSK, 16PSK) and perform BER calculation <a name="top"></a> <br>
 </p>
 
-<b>Discipline | Fill your discipline name here <b> 
+<b>Discipline | Electronics and Communication Engineering <b> 
 :--|:--|
-<b> Lab | Fill your lab name here<b> 
-<b> Experiment|  Fill your experiment name here   <b> 
+<b> Lab | Communication System <b> 
+<b> Experiment|  To simulate m arrays phase shift keying technique using MATLAB software (8PSK, 16PSK) and perform BER calculation    <b> 
 
 
 <h4> [1. Focus Area](#LO)
