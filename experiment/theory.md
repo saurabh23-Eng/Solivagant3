@@ -49,7 +49,10 @@ Constellation points get closer together
 BER increases for the same noise level due to reduced noise margin
 ### 4. Circuit Digram 
 ![WhatsApp Image 2025-05-31 at 15 27 38_d1444bfe](https://github.com/user-attachments/assets/4319738d-27a6-4a63-9ede-96625dcf59b8)
-**Circuit Digram of M array Phase Shift (using matlab software)**
+
+
+
+                           Circuit Digram of M array Phase Shift (using matlab software)
 
 
 ### 4. MATLAB Simulation Steps (Step-by-Step)
