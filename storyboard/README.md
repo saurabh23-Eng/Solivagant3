@@ -9,36 +9,86 @@ Delete this line before submission : The core principle of storyboarding is to m
 Experiment 1: Name of the Experiment
 
 ### 1. Story Outline
+This experiment focuses on simulating M-ary Phase Shift Keying (M-PSK) techniques, specifically 8PSK and 16PSK, using MATLAB software. The aim is to understand the process of modulating digital data into different phase symbols, transmitting over a noisy channel, and demodulating at the receiver end. Through this, students will observe how increasing the number of phases affects signal constellation, bit error rate, and overall system performance.
 
-Describe outline here ( Guide : The proposer should first draft the story outline for the proposed outline. This could be 2 or 3 paragraphs.)
+By performing the simulation, learners gain hands-on experience with digital modulation concepts, constellation diagram interpretation, and error rate calculation, which are crucial for modern communication systems
+
 
 ### 2. Story
+M-PSK modulation maps digital bits into symbols represented as points on a circle in the complex plane, each with a distinct phase. For 8PSK and 16PSK, the symbol set contains 8 and 16 different phases, respectively. The experiment begins with generating a random bit stream, which is grouped and mapped to corresponding phase symbols.
 
-Describe the Story introduction here (Guide : The next step is to write a story. Story should be a brief logical description in simple English. It should talk about the overall execution of the experiment in a simplified manner. (should not include any equations/ drawings). The story should include the following points) )
+The transmitter modulates these symbols on a carrier wave by shifting its phase. The modulated signal passes through an AWGN channel to simulate real-world noise effects. At the receiver, the noisy signal is demodulated by comparing received phases to ideal constellation points. Finally, the bit error rate (BER) is calculated by comparing the original and received bits.
+
 
 #### 2.1 Set the Visual Stage Description:
-Describe here : (Guide : When a user lands up into a simulator, the visual stage is the first thing that user comes across. The visual stage should include all the elements to be seen by a user on an imaginary canvas.  (This should NOT include any drawings. ) )
+When the user opens the simulator, they see:
+
+Input panel to select parameters like modulation order (8 or 16), number of bits, and SNR values.
+
+Blocks showing data generation, symbol mapping, modulator, AWGN channel, demodulator, and BER calculator.
+
+Graphical outputs including constellation diagrams (transmitted and received), and BER vs SNR plots.
+
+Step-by-step simulation progress indicators
 
 #### 2.2 Set User Objectives & Goals:
-Describe the objectives and goals in details here : (Guide : The user should clearly understand the aims and objective of the experiment. ( how he will begin experiment. in descriptive))
+The user aims to:
+
+Understand how digital bits are converted to M-PSK symbols.
+
+Visualize the constellation diagrams for 8PSK and 16PSK.
+
+Observe the effect of noise by varying SNR values on signal quality and BER.
+
+Calculate and analyze BER performance for different modulation orders.
+
+The user begins by choosing modulation parameters and running the simulation to see real-time results and graphical outputs
 
 #### 2.3 Set the Pathway Activities:
 
-Describe the pathway activites here : (Guide : Set the pathway activities in line with the learning objectives (LOs)  & with a view to achieve the goals set in introductory & pedagogy documnets.  (once he begins, how he will traverse through the entire experiment ? in descriptive))
+Start by selecting modulation order (8PSK or 16PSK).
+
+Generate random binary data bits.
+
+Map bits to symbols (phase points).
+
+Modulate the carrier wave using symbol phases.
+
+Pass the signal through AWGN channel with selectable noise level.
+
+Demodulate the received noisy signal to estimate transmitted bits.
+
+Calculate BER by comparing transmitted and received bits.
+
+Plot constellation diagrams and BER vs SNR graphs for analysis
 
 ##### 2.4 Set Challenges and Questions/Complexity/Variations in Questions:
+How does increasing modulation order affect the minimum distance between constellation points and BER?
 
-Describe the challenges Here : (Guide : Set Challenges and Questions/Complexity/variations in questions according to User’s level, so as to invoke the learners’ interest.  (while traversing, what challenges he will face? how he has to solve and overcome ? descriptive).)
+What happens to BER as SNR decreases?
+
+Can the user interpret the constellation diagrams to identify symbol errors?
+
+What trade-offs exist between bandwidth efficiency and error performance in 8PSK vs 16PSK?
+
 
 ##### 2.5 Allow pitfalls:
-Describe the pitfalls here: (Guide : while traversing or while solving challenge, how will we bring a situation in front of him that he commits mistake if he is not attentive , or not following procedure , descriptive)
+Incorrect selection of modulation order might confuse users; ensure instructions clarify symbol grouping.
+
+Users may misinterpret constellation diagrams without understanding phase points.
+
+Failing to vary SNR may lead to misunderstanding noise effects.
+
+Not comparing BER results across modulation orders could miss performance insights.
 
 ##### 2.6 Conclusion:
-Describe conclusion here : (Guide: This may include displaying: how much time did the user take to solve the questions/ How many questions were right?/ How many hints did the learner use. Based on this the evaluation/marking to be suggested to the user. (once he is towards the completion of the experiment, what LO he is taking along with him, what will be his probable, interpretation/conclusion , descriptive) )
+At the experiment's end, the user understands how M-PSK modulates digital data by phase shifts, sees the impact of noise on communication quality, and interprets BER vs SNR results. The simulation reinforces theoretical concepts with practical visualization, preparing the learner for real-world digital communication systems.
 
 ##### 2.7 Equations/formulas: NA
-Type equations here : (Guide : ( a separate sheet having equations / programs for the lab exper3ment to be shared along with the Story submissions (1) . You can mark it as numerical reference numbers within the story narration (like we cite in the research papers) and then separately share these equations/programs sheets as a reference, do not include the equations as a whole in the narration))
-Tool can be used to integrate formula in Markdown <b> [here](http://latex.codecogs.com/eqneditor/samples/example3.php) </b>
+
+ Type equations here : (Guide : ( a separate sheet having equations / programs for the lab exper3ment to be shared along with the Story submissions (1) . You can mark it as numerical reference numbers within the story narration (like we cite in the research papers) and then separately share these equations/programs sheets as a reference, do not include the equations as a whole in the narration)) Tool can be used to integrate formula in Markdown here
+​
+ 
 
 
 ### 3. Flowchart
