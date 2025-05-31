@@ -131,7 +131,16 @@ Lower M → **More Robust**, but slower transmission.
 
 4. Increased bit error rate (BER) under low SNR conditions.
 
-📝 Summary
+ ### 9. Conclusion
+
+M-PSK provides a flexible way to increase data transmission rates using the same bandwidth.
+
+Simulation results confirm that as the value of M increases, the system becomes more sensitive to noise, resulting in a higher BER.
+
+8-PSK and 16-PSK offer a good balance between performance and complexity for many practical systems.
+
+This simulation reinforces the importance of choosing the right modulation scheme based on channel conditions and system requirements.
+### 10. Summary
 
 M-ary PSK is a digital modulation method where information is transmitted by varying the phase of a constant-amplitude carrier wave.
 
@@ -145,19 +154,5 @@ Higher M = Higher data rate, but higher BER.
 
 Lower M = More robust, but slower.
 
-
-
-
----
-
-🔚 Conclusion
-
-M-PSK provides a flexible way to increase data transmission rates using the same bandwidth.
-
-Simulation results confirm that as the value of M increases, the system becomes more sensitive to noise, resulting in a higher BER.
-
-8-PSK and 16-PSK offer a good balance between performance and complexity for many practical systems.
-
-This simulation reinforces the importance of choosing the right modulation scheme based on channel conditions and system requirements.
 
 
