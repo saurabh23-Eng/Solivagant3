@@ -1,1 +1,1 @@
-### Power System Lab
+### Communication Lab
