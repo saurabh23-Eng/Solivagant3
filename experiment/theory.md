@@ -95,7 +95,7 @@ xlabel('SNR (dB)');
 ylabel('Bit Error Rate (BER)');
 title(['BER vs SNR for ', num2str(M), '-PSK']);
 
- 5. **Observation**
+ ### 5. Observation
 
 M-PSK Scheme	Theoretical BER	Observed BER (at SNR = 10 dB)
 
@@ -104,10 +104,60 @@ M-PSK Scheme	Theoretical BER	Observed BER (at SNR = 10 dB)
 32-PSK	High	High
 64-PSK	Very High	Very High
 
-6. **Key Points**
+6. Key Points
 
-Higher M → Higher Data Rate, but more prone to noise.
+ Higher M → **Higher Data Rate**, but more prone to noise.
 
-Lower M → More Robust, but slower transmission.
+Lower M → **More Robust**, but slower transmission.
+### 7.Advantages of M-PSK Modulation and Demodulation
+
+1. Efficient use of bandwidth (especially with higher M values).
+
+2. Constant envelope → suitable for non-linear power amplifiers.
+
+3 .Simple implementation for lower-order PSK (e.g., BPSK, QPSK, 8-PSK).
+
+4. Higher data rates with increased M (more bits per symbol).
+
+5. Suitable for coherent detection techniques with good synchronization.
+
+### 8. Disadvantages of M-PSK
+
+1. Higher-order PSK (16, 32, 64) is more susceptible to noise due to smaller phase spacing.
+
+2. Requires accurate phase synchronization at the receiver.
+
+3.Complex demodulation circuitry for large M values.
+
+4. Increased bit error rate (BER) under low SNR conditions.
+
+📝 Summary
+
+M-ary PSK is a digital modulation method where information is transmitted by varying the phase of a constant-amplitude carrier wave.
+
+In this experiment, MATLAB is used to simulate various M-PSK schemes (8, 16, 32, 64).
+
+BER is calculated to evaluate performance under different noise levels (SNR).
+
+Trade-offs exist between data rate and noise performance:
+
+Higher M = Higher data rate, but higher BER.
+
+Lower M = More robust, but slower.
+
+
+
+
+---
+
+🔚 Conclusion
+
+M-PSK provides a flexible way to increase data transmission rates using the same bandwidth.
+
+Simulation results confirm that as the value of M increases, the system becomes more sensitive to noise, resulting in a higher BER.
+
+8-PSK and 16-PSK offer a good balance between performance and complexity for many practical systems.
+
+This simulation reinforces the importance of choosing the right modulation scheme based on channel conditions and system requirements.
 
 
