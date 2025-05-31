@@ -1,5 +1,5 @@
 
-## ✅ Theory
+##  Theory
 
 **Title:** Theory of M-ary Phase Shift Keying (PSK) and BER Calculation
 
