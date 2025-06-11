@@ -1,4 +1,4 @@
-**References**
+
 
 1. Simon Haykin, *Digital Communication Systems*, 5th Edition, Wiley, 2009.
 
