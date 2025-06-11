@@ -54,7 +54,7 @@ BER increases for the same noise level due to reduced noise margin
                            Circuit Digram of M array Phase Shift (using matlab software)
 
 
-### 4. MATLAB Simulation Steps (Step-by-Step)
+### 5. MATLAB Simulation Steps (Step-by-Step)
 
  Step 1: **Generate Random Binary Data**
 
@@ -101,7 +101,7 @@ xlabel('SNR (dB)');
 ylabel('Bit Error Rate (BER)');
 title(['BER vs SNR for ', num2str(M), '-PSK']);
 
- ### 5. Observation
+ ### 6. Observation
 
 M-PSK Scheme	Theoretical BER	Observed BER (at SNR = 10 dB)
 
